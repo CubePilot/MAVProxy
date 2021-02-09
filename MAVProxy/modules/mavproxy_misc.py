@@ -88,6 +88,7 @@ class MiscModule(mp_module.MPModule):
         self.add_command('devid', self.cmd_devid, "show device names from parameter IDs")
         self.add_command('gethome', self.cmd_gethome, "get HOME_POSITION")
         self.add_command('flashbootloader', self.cmd_flashbootloader, "flash bootloader (dangerous)")
+        self.add_command('flashsecurebootloader', self.cmd_flashsecurebootloader, "flash secure bootloader (dangerous)")
         self.add_command('lockup_autopilot', self.cmd_lockup_autopilot, "lockup autopilot")
         self.add_command('hardfault_autopilot', self.cmd_hardfault_autopilot, "hardfault autopilot")
         self.add_command('batreset', self.cmd_battery_reset, "reset battery remaining")
@@ -305,7 +306,14 @@ class MiscModule(mp_module.MPModule):
                                           0,
                                           mavutil.mavlink.MAV_CMD_FLASH_BOOTLOADER,
                                               0, 0, 0, 0, 0, 290876, 0, 0)
-        
+
+    def cmd_flashsecurebootloader(self, args):
+        '''flash bootloader'''
+        self.master.mav.command_long_send(self.settings.target_system,
+                                          0,
+                                          mavutil.mavlink.MAV_CMD_FLASH_BOOTLOADER,
+                                              0, 0, 0, 0, 0, 290877, 0, 0)
+
     def cmd_playtune(self, args):
         '''send PLAY_TUNE message'''
         if len(args) < 1:
