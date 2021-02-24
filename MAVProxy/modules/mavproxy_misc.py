@@ -89,6 +89,8 @@ class MiscModule(mp_module.MPModule):
         self.add_command('gethome', self.cmd_gethome, "get HOME_POSITION")
         self.add_command('flashbootloader', self.cmd_flashbootloader, "flash bootloader (dangerous)")
         self.add_command('flashsecurebootloader', self.cmd_flashsecurebootloader, "flash secure bootloader (dangerous)")
+        self.add_command('setpin', self.cmd_setpin, "setpin <PIN>")
+        self.add_command('changepin', self.cmd_changepin, "changepin <OLDPIN> <NEWPIN>")
         self.add_command('lockup_autopilot', self.cmd_lockup_autopilot, "lockup autopilot")
         self.add_command('hardfault_autopilot', self.cmd_hardfault_autopilot, "hardfault autopilot")
         self.add_command('batreset', self.cmd_battery_reset, "reset battery remaining")
@@ -313,6 +315,21 @@ class MiscModule(mp_module.MPModule):
                                           0,
                                           mavutil.mavlink.MAV_CMD_FLASH_BOOTLOADER,
                                               0, 0, 0, 0, 0, 290877, 0, 0)
+
+    def cmd_setpin(self, args):
+        '''Set Secure Pin'''
+        if len(args) < 1:
+            print("Usage: setpin <PIN>")
+            return
+        self.master.mav.secure_pin_send(int(args[0]))
+
+
+    def cmd_changepin(self, args):
+        '''Change Secure Pin'''
+        if len(args) < 2:
+            print("Usage: changepin <OLDPIN> <NEWPIN>")
+            return
+        self.master.mav.change_secure_pin_send(int(args[0]), int(args[1]))
 
     def cmd_playtune(self, args):
         '''send PLAY_TUNE message'''
